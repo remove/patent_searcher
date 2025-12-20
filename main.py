@@ -1,13 +1,10 @@
 # Step 1: Define tools and model
 
 from langchain.tools import tool
-from langchain_google_genai import ChatGoogleGenerativeAI 
+from langchain_google_genai import ChatGoogleGenerativeAI
 
 
-model = ChatGoogleGenerativeAI(
-    model="gemini-2.5-flash-lite",
-    temperature=0
-)
+model = ChatGoogleGenerativeAI(model="gemini-2.5-flash-lite", temperature=0)
 
 
 # Define tools
@@ -60,6 +57,7 @@ class MessagesState(TypedDict):
     messages: Annotated[list[AnyMessage], operator.add]
     llm_calls: int
 
+
 # Step 3: Define model node
 from langchain.messages import SystemMessage
 
@@ -97,6 +95,7 @@ def tool_node(state: dict):
         result.append(ToolMessage(content=observation, tool_call_id=tool_call["id"]))
     return {"messages": result}
 
+
 # Step 5: Define logic to determine whether to end
 
 from typing import Literal
@@ -116,6 +115,7 @@ def should_continue(state: MessagesState) -> Literal["tool_node", END]:
 
     # Otherwise, we stop (reply to the user)
     return END
+
 
 # Step 6: Build agent
 
